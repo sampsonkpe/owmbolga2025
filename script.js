@@ -33,4 +33,4 @@ function updateProgress(newRaised) {
   requestAnimationFrame(animateCounter);
 }
 // Run when page loads
-window.onload = updateProgress(200);
+window.onload = updateProgress(300);
