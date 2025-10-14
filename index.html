@@ -27,9 +27,48 @@
       <div id="progress-text">0% raised</div>
 
       <!-- Button -->
-      <a href="https://paystack.shop/pay/partnerwithowmbolga" class="partner-btn">Partner with Us</a>
+      <!-- <a href="https://paystack.shop/pay/partnerwithowmbolga" class="partner-btn">Partner with Us</a> -->
+      <button id="partner-btn" class="partner-btn">Partner with Us</button>
     </div>
   </div>
+
+    <!-- Modal: payment details -->
+  <div id="pay-modal" class="modal" aria-hidden="true">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+      <h2 id="modal-title">How to contribute</h2>
+      <p class="small">Tap an option to copy the Account Number to your clipboard or use the <b>Initiate USSD</b> for Mobile Money only.</p>
+
+      <div class="detail">
+        <div class="detail-left">
+          <div class="detail-label">Bank Transfer</div>
+          <div class="detail-value" id="bank-value">Account Name: CHRIST FOR YOUTH INTERNATIONAL<br>Account: 1050170093616<br>Bank: FIDELITY BANK</div>
+        </div>
+        <div class="detail-actions">
+          <button class="copy-btn" data-copy="Account Name: CHRIST FOR YOUTH INTERNATIONAL\nAccount: 1050170093616\nBank: FIDELITY BANK">Copy</button>
+        </div>
+      </div>
+
+      <div class="detail">
+        <div class="detail-left">
+          <div class="detail-label">MTN Mobile Money</div>
+          <div class="detail-value" id="mtnmomo-value">Account Name: CHRIST FOR YOUTH INTERNATIONAL<br>Number: 0248388771</div>
+        </div>
+        <div class="detail-actions">
+          <button class="copy-btn" data-copy="0248388771">Copy</button>
+          <!-- USSD starts on mobile browsers; '#' must be URL-encoded as %23 -->
+          <a class="ussd-link" href="tel:*170*0248388771%23" id="ussd-mtn">Initiate USSD</a>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="done-btn" class="partner-btn partner-btn-ghost">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Small toast for feedback -->
+  <div id="toast" class="toast" aria-hidden="true"></div>
 
   <script src="script.js"></script>
 </body>
