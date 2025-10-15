@@ -5,7 +5,16 @@ const goal = 500000;
 const SHEET_API_URL =
   "https://script.google.com/macros/s/AKfycbz_0geVTBySLZqVsWYnjkCeBXNqn94SgGrvZDm98wMn0a2nbI7_RKH-NuGLXOWiIB5o/exec";
 
-// Fetch total contributions from Google Sheets
+// Elements
+const progressBar = document.getElementById("progress-bar");
+const progressText = document.getElementById("progress-text");
+const toast = document.getElementById("toast");
+const introCard = document.querySelector(".intro-card");
+const paymentCard = document.querySelector(".payment-card");
+const partnerBtn = document.getElementById("partnerBtn");
+const backBtn = document.getElementById("backBtn");
+
+// ======== Fetch total contributions from Google Sheets ========
 async function fetchRaised() {
   try {
     const response = await fetch(SHEET_API_URL);
@@ -18,11 +27,8 @@ async function fetchRaised() {
   }
 }
 
-// Animate progress bar
+// ======== Animate progress bar ========
 function updateProgress(newRaised) {
-  const progressBar = document.getElementById("progress-bar");
-  const progressText = document.getElementById("progress-text");
-
   let start = 0;
   let end = newRaised;
   let duration = 1000;
@@ -43,36 +49,62 @@ function updateProgress(newRaised) {
   requestAnimationFrame(animateCounter);
 }
 
-// ======== Toast ========
+// ======== Toast function ========
 function showToast(message) {
-  const toast = document.getElementById("toast");
   toast.textContent = message;
   toast.classList.add("visible");
   setTimeout(() => toast.classList.remove("visible"), 2000);
 }
 
-// ======== Copy-to-clipboard logic ========
-document.querySelectorAll(".copy-btn").forEach((btn) => {
+// ======== Copy buttons ========
+document.querySelectorAll(".copy-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     const text = btn.dataset.copy;
     navigator.clipboard.writeText(text)
       .then(() => showToast("Copied to clipboard!"))
-      .catch((err) => console.error("Copy failed", err));
+      .catch(err => console.error("Copy failed", err));
   });
 });
 
-// ======== Modal logic ========
-const modal = document.getElementById("pay-modal");
-const openBtn = document.getElementById("partner-btn");
-const closeBtns = [document.getElementById("done-btn"), document.getElementById("modal-backdrop")];
-
-openBtn.onclick = () => (modal.style.display = "flex");
-closeBtns.forEach(btn => btn.onclick = () => (modal.style.display = "none"));
-
-// Optional: click outside modal-panel closes modal
-window.addEventListener("click", (e) => {
-  if (e.target === modal) modal.style.display = "none";
+// ======== USSD buttons ========
+document.querySelectorAll(".ussd-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const ussdCode = btn.dataset.ussd;
+    window.location.href = `tel:${ussdCode}`;
+  });
 });
 
-// Run on page load
+// ======== Toggle between intro and payment cards ========
+function fadeOut(element, callback) {
+  element.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+  element.style.opacity = 0;
+  element.style.transform = "translateY(-20px)";
+  setTimeout(() => {
+    element.style.display = "none";
+    element.style.opacity = 1;
+    element.style.transform = "translateY(0)";
+    if (callback) callback();
+  }, 400);
+}
+
+function fadeIn(element) {
+  element.style.display = "flex";
+  element.style.opacity = 0;
+  element.style.transform = "translateY(20px)";
+  requestAnimationFrame(() => {
+    element.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+    element.style.opacity = 1;
+    element.style.transform = "translateY(0)";
+  });
+}
+
+partnerBtn.addEventListener("click", () => {
+  fadeOut(introCard, () => fadeIn(paymentCard));
+});
+
+backBtn.addEventListener("click", () => {
+  fadeOut(paymentCard, () => fadeIn(introCard));
+});
+
+// ======== Initialize ========
 window.onload = fetchRaised;
