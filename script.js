@@ -9,6 +9,7 @@ const SHEET_API_URL =
 const progressBar = document.getElementById("progress-bar");
 const progressText = document.getElementById("progress-text");
 const toast = document.getElementById("toast");
+const cards = document.querySelectorAll(".card");
 const introCard = document.querySelector(".intro-card");
 const paymentCard = document.querySelector(".payment-card");
 const partnerBtn = document.getElementById("partnerBtn");
@@ -41,7 +42,7 @@ function updateProgress(newRaised) {
     let percent = Math.min((current / goal) * 100, 100);
 
     progressBar.style.width = percent + "%";
-    progressText.textContent = `₵${current.toLocaleString()} raised out of GH₵${goal.toLocaleString()} goal (${percent.toFixed(1)}%)`;
+    progressText.textContent = `GH₵${current.toLocaleString()} raised out of GH₵${goal.toLocaleString()} goal (${percent.toFixed(1)}%)`;
 
     if (progress < 1) requestAnimationFrame(animateCounter);
   }
@@ -76,9 +77,10 @@ document.querySelectorAll(".ussd-btn").forEach(btn => {
 
 // ======== Toggle between intro and payment cards ========
 function fadeOut(element, callback) {
-  element.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+  element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
   element.style.opacity = 0;
   element.style.transform = "translateY(-20px)";
+  element.setAttribute("aria-hidden", "true");
   setTimeout(() => {
     element.style.display = "none";
     element.style.opacity = 1;
@@ -91,8 +93,9 @@ function fadeIn(element) {
   element.style.display = "flex";
   element.style.opacity = 0;
   element.style.transform = "translateY(20px)";
+  element.setAttribute("aria-hidden", "false");
   requestAnimationFrame(() => {
-    element.style.transition = "opacity 0.4s ease, transform 0.4s ease";
+    element.style.transition = "opacity 0.6s ease, transform 0.6s ease";
     element.style.opacity = 1;
     element.style.transform = "translateY(0)";
   });
