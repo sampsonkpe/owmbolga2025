@@ -15,6 +15,8 @@ const paymentCard = document.querySelector(".payment-card");
 const partnerBtn = document.getElementById("partnerBtn");
 const backBtn = document.getElementById("backBtn");
 
+let currentRaised = 0;
+
 // ======== Fetch total contributions from Google Sheets ========
 async function fetchRaised() {
   try {
@@ -30,7 +32,7 @@ async function fetchRaised() {
 
 // ======== Animate progress bar ========
 function updateProgress(newRaised) {
-  let start = 0;
+  let start = currentRaised;
   let end = newRaised;
   let duration = 3000;
   let startTime = null;
