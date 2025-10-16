@@ -113,6 +113,6 @@ backBtn.addEventListener("click", () => {
 
 // ======== Initialize ========
 window.onload = () => {
-  updateProgress(9000); // Start at 9000
+  updateProgress(7000); // Start at 7000
   fetchRaised();
 };
