@@ -32,7 +32,7 @@ async function fetchRaised() {
 function updateProgress(newRaised) {
   let start = 0;
   let end = newRaised;
-  let duration = 1000;
+  let duration = 3000;
   let startTime = null;
 
   function animateCounter(timestamp) {
@@ -110,4 +110,7 @@ backBtn.addEventListener("click", () => {
 });
 
 // ======== Initialize ========
-window.onload = fetchRaised;
+window.onload = () => {
+  updateProgress(15000); // Start at 15000
+  fetchRaised();
+};
