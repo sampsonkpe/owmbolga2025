@@ -15,7 +15,7 @@ const paymentCard = document.querySelector(".payment-card");
 const partnerBtn = document.getElementById("partnerBtn");
 const backBtn = document.getElementById("backBtn");
 
-let currentRaised = 0;
+let currentRaised = 615;
 
 // ======== Fetch total contributions from Google Sheets ========
 async function fetchRaised() {
@@ -23,25 +23,26 @@ async function fetchRaised() {
     const response = await fetch(SHEET_API_URL);
     if (!response.ok) throw new Error("Sheet API returned " + response.status);
     const data = await response.json();
-    updateProgress(Number(data.total || 0));
+    updateProgress(Number(data.total || currentRaised));
   } catch (err) {
     console.warn("Could not fetch sheet total:", err);
-    updateProgress(0);
+    updateProgress(currentRaised);
   }
 }
 
 // ======== Animate progress bar ========
 function updateProgress(newRaised) {
-  let start = currentRaised;
-  let end = newRaised;
-  let duration = 3000;
+  const start = currentRaised;
+  const end = newRaised;
+  currentRaised = newRaised;
+  const duration = Math.max(1000, Math.min(4000, Math.abs(end - start) * 2));
   let startTime = null;
 
   function animateCounter(timestamp) {
     if (!startTime) startTime = timestamp;
-    let progress = Math.min((timestamp - startTime) / duration, 1);
-    let current = Math.floor(start + (end - start) * progress);
-    let percent = Math.min((current / goal) * 100, 100);
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const current = Math.floor(start + (end - start) * progress);
+    const percent = Math.min((current / goal) * 100, 100);
 
     progressBar.style.width = percent + "%";
     progressText.textContent = `GH₵${current.toLocaleString()} raised out of GH₵${goal.toLocaleString()} goal (${percent.toFixed(1)}%)`;
@@ -113,6 +114,6 @@ backBtn.addEventListener("click", () => {
 
 // ======== Initialize ========
 window.onload = () => {
-  updateProgress(7000); // Start at 7000
+  updateProgress(currentRaised);
   fetchRaised();
 };
