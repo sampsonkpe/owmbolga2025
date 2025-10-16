@@ -44,7 +44,7 @@ function updateProgress(newRaised, duration = 1000) {
 
 // ======== Preload animation 0 → approx currentRaised ========
 function preloadAnimation(target) {
-  const duration = 6000; // total preload animation duration
+  const duration = 4000; // total preload animation duration
   const start = 0;
   let startTime = null;
 
