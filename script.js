@@ -15,27 +15,16 @@ const paymentCard = document.querySelector(".payment-card");
 const partnerBtn = document.getElementById("partnerBtn");
 const backBtn = document.getElementById("backBtn");
 
-let currentRaised = 615;
-
-// ======== Fetch total contributions from Google Sheets ========
-async function fetchRaised() {
-  try {
-    const response = await fetch(SHEET_API_URL);
-    if (!response.ok) throw new Error("Sheet API returned " + response.status);
-    const data = await response.json();
-    updateProgress(Number(data.total || currentRaised));
-  } catch (err) {
-    console.warn("Could not fetch sheet total:", err);
-    updateProgress(currentRaised);
-  }
-}
+// ======== Global tracker ========
+let currentRaised = 0; // start from 0 for preload animation
+let apiRaised = 0;     // value fetched from API
 
 // ======== Animate progress bar ========
-function updateProgress(newRaised) {
+function updateProgress(newRaised, duration = 1000) {
   const start = currentRaised;
   const end = newRaised;
-  currentRaised = newRaised;
-  const duration = Math.max(1000, Math.min(4000, Math.abs(end - start) * 2));
+  currentRaised = newRaised; // update global tracker
+
   let startTime = null;
 
   function animateCounter(timestamp) {
@@ -51,6 +40,47 @@ function updateProgress(newRaised) {
   }
 
   requestAnimationFrame(animateCounter);
+}
+
+// ======== Preload animation 0 → approx currentRaised ========
+function preloadAnimation(target) {
+  const duration = 6000; // total preload animation duration
+  const start = 0;
+  let startTime = null;
+
+  function animatePreload(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    const current = Math.floor(start + (target - start) * progress);
+
+    // Only update if API hasn't already updated beyond this number
+    if (current > currentRaised) currentRaised = current;
+
+    const percent = Math.min((currentRaised / goal) * 100, 100);
+    progressBar.style.width = percent + "%";
+    progressText.textContent = `GH₵${currentRaised.toLocaleString()} raised out of GH₵${goal.toLocaleString()} goal (${percent.toFixed(1)}%)`;
+
+    if (progress < 1) {
+      requestAnimationFrame(animatePreload);
+    }
+  }
+
+  requestAnimationFrame(animatePreload);
+}
+
+// ======== Fetch total contributions from Google Sheets ========
+async function fetchRaised() {
+  try {
+    const response = await fetch(SHEET_API_URL);
+    if (!response.ok) throw new Error("Sheet API returned " + response.status);
+    const data = await response.json();
+    apiRaised = Number(data.total || 0);
+
+    // Smoothly continue from currentRaised to API value
+    if (apiRaised > currentRaised) updateProgress(apiRaised, 2000);
+  } catch (err) {
+    console.warn("Could not fetch sheet total:", err);
+  }
 }
 
 // ======== Toast function ========
@@ -114,6 +144,7 @@ backBtn.addEventListener("click", () => {
 
 // ======== Initialize ========
 window.onload = () => {
-  updateProgress(currentRaised);
   fetchRaised();
+  // Preload 0 → 616 while API fetch happens
+  preloadAnimation(616);
 };
