@@ -15,16 +15,16 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
 }
 
 /* Slide timing (10s apart) */
-.slide1 { background-image: url('slide1.jpg'); animation-delay: 0s; }
-.slide2 { background-image: url('slide2.jpg'); animation-delay: 6s; }
-.slide3 { background-image: url('slide3.jpg'); animation-delay: 12s; }
-.slide4 { background-image: url('slide4.jpg'); animation-delay: 18s; }
-.slide5 { background-image: url('slide5.jpg'); animation-delay: 24s; }
-.slide6 { background-image: url('slide6.jpg'); animation-delay: 30s; }
-.slide7 { background-image: url('slide7.jpg'); animation-delay: 36s; } 
-.slide8 { background-image: url('slide8.jpg'); animation-delay: 42s; }
-.slide9 { background-image: url('slide9.jpg'); animation-delay: 48s; }
-.slide10 { background-image: url('slide10.jpg'); animation-delay: 54s; }
+.slide1 { background-image: url('images/slide1.jpg'); animation-delay: 0s; }
+.slide2 { background-image: url('images/slide2.jpg'); animation-delay: 6s; }
+.slide3 { background-image: url('images/slide3.jpg'); animation-delay: 12s; }
+.slide4 { background-image: url('images/slide4.jpg'); animation-delay: 18s; }
+.slide5 { background-image: url('images/slide5.jpg'); animation-delay: 24s; }
+.slide6 { background-image: url('images/slide6.jpg'); animation-delay: 30s; }
+.slide7 { background-image: url('images/slide7.jpg'); animation-delay: 36s; }
+.slide8 { background-image: url('images/slide8.jpg'); animation-delay: 42s; }
+.slide9 { background-image: url('images/slide9.jpg'); animation-delay: 48s; }
+.slide10 { background-image: url('images/slide10.jpg'); animation-delay: 54s; }
 
 /* Alternate morph for even slides for variety */
 .slide2, .slide4, .slide6, .slide8, .slide10 { animation-name: morphAlt; }
