@@ -56,10 +56,13 @@
       <h1>How to Support</h1>
       <p class="choose">Choose a payment method and copy the details:</p>
 
+      <div class="account-name">
+          Account Name: <strong>CHRIST FOR YOUTH INTERNATIONAL</strong>
+      </div>
+
       <div class="payment-option">
         <div class="details">
           Bank: FIDELITY BANK<br>
-          Account Name: <strong>CHRIST FOR YOUTH INTERNATIONAL</strong><br>
           Account Number: <strong>1050170093616</strong>
         </div>
         <div class="actions">
@@ -70,15 +73,24 @@
       <div class="payment-option">
         <div class="details">
           MTN Mobile Money<br>
-          Account Name: <strong>CHRIST FOR YOUTH INTERNATIONAL</strong><br>
           Account Number: <strong>0248388771</strong>
         </div>
         <div class="actions">
           <button class="copy-btn" data-copy="0248388771">Copy</button>
-          <button class="ussd-btn" data-ussd="*170%23">Initiate USSD</button>
+          <button id="initiateUssdBtn" class="ussd-main-btn">Initiate USSD</button>
         </div>
       </div>
 
+      <!-- USSD dropdown overlay [centered] -->
+      <div id="ussdOverlay" class="ussd-overlay hidden">
+        <div class="ussd-dropdown-centered">
+          <button class="ussd-option" data-ussd="*170%23">MTN</button>
+          <button class="ussd-option" data-ussd="*110#">Telecel</button>
+          <button class="ussd-option" data-ussd="*110#">AirtelTigo</button>
+        </div>
+      </div>
+
+      <!-- Back button -->
       <button id="backBtn" class="back-btn">Back</button>
     </div>
   </div>

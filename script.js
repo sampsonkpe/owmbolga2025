@@ -87,7 +87,7 @@ async function fetchRaised() {
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("visible");
-  setTimeout(() => toast.classList.remove("visible"), 2000);
+  setTimeout(() => toast.classList.remove("visible"), 3000);
 }
 
 // ======== Copy buttons ========
@@ -100,12 +100,71 @@ document.querySelectorAll(".copy-btn").forEach(btn => {
   });
 });
 
-// ======== USSD buttons ========
-document.querySelectorAll(".ussd-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const ussdCode = btn.dataset.ussd;
-    window.location.href = `tel:${ussdCode}`;
+// ======== USSD codes ========
+const ussdCodes = {
+  mtn: "*170#",
+  airteltigo: "*110#",
+  telecel: "*110#"
+};
+
+// ======== Simplified USSD interaction ========
+const ussdBtn = document.getElementById("initiateUssdBtn");
+const ussdOverlay = document.getElementById("ussdOverlay");
+const ussdDropdown = document.querySelector(".ussd-dropdown-centered");
+
+let hideTimeout; // auto-hide timeout
+
+// Show USSD overlay
+function showUssdOverlay() {
+  ussdOverlay.classList.add("show");
+
+  // Clear previous timeout if any
+  clearTimeout(hideTimeout);
+  hideTimeout = setTimeout(hideUSSDOverlay, 30000); // auto-hide after 30s
+}
+
+// Hide overlay function
+function hideUSSDOverlay() {
+  ussdOverlay.classList.remove("show");
+  clearTimeout(hideTimeout);
+}
+
+ussdBtn.addEventListener("click", showUssdOverlay);
+
+// Hide USSD overlay when clicking outside dropdown
+ussdOverlay.addEventListener("click", (e) => {
+  // Only close if clicked outside the dropdown
+  if (!e.target.closest(".ussd-dropdown-centered")) {
+    hideUSSDOverlay();
+  }
+});
+
+// Prevent clicks inside dropdown from closing overlay
+ussdDropdown.addEventListener("click", (e) => {
+  e.stopPropagation();
+});
+
+// Hide overlay on ESC key press
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    hideUSSDOverlay();
+  }
+});
+
+// Handle USSD option click
+document.querySelectorAll(".ussd-dropdown-centered .ussd-option").forEach(option => {
+  option.addEventListener("click", () => {
+    const ussdCode = option.dataset.ussd;
+    hideUSSDOverlay();
+    setTimeout(() => {
+      window.location.href = `tel:${ussdCode}`;
+    }, 200);
   });
+});
+
+// Prevent clicks inside dropdown from closing overlay
+ussdDropdown.addEventListener("click", (e) => {
+  e.stopPropagation();
 });
 
 // ======== Toggle between intro and payment cards ========

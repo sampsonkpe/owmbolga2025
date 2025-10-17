@@ -87,16 +87,16 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
 @media (max-width: 768px) {
   .card { width: 80%; padding: 20px; border-radius: 15px; }
   .card-logo { width: 55px; margin-bottom: 10px; }
-  .card h1 { font-size: 1.25rem; }
+  .card h1 { font-size: 1.1rem; }
   .intro-card,
   .card .subtitle,
   .card .support-text,
-  .card .details { font-size: 0.85rem; }
-  .partner-btn { padding: 14px 26px; font-size: 0.95rem; }
+  .card .details { font-size: 0.7rem; }
+  .partner-btn { padding: 14px 26px; font-size: 0.8rem; }
   .back-btn,
   .learn-more-link,
   .copy-btn,
-  .ussd-btn { padding: 8px 16px; font-size: 0.85rem; }
+  .ussd-btn { padding: 8px 16px; font-size: 0.65rem; }
 }
 
 .highlight { color: #599ee7; font-weight: 700; }
@@ -138,8 +138,10 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
   font-weight: 500;
 }
 
-/* Partner button */
-.partner-btn {
+/* Partner button, USSD button, and USSD main button */
+.partner-btn,
+.ussd-btn,
+.ussd-main-btn {
   display: inline-block;
   padding: 12px 20px;
   border-radius: 8px;
@@ -148,12 +150,32 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
   font-weight: 600;
   border: none;
   cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.3s;
+  font-size: 0.85rem;
+  transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   align-self: center;
 }
 
-.partner-btn:hover {
+/* Copy button */
+.copy-btn {
+  display: inline-block;
+  padding: 12px 20px;
+  border-radius: 8px;
+  background: #c9c9c9;
+  color: #181818;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Hover effect for partner button, copy button, ussd button, ussd main button */
+.partner-btn:hover,
+.copy-btn:hover,
+.ussd-btn:hover,
+.ussd-main-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 15px rgba(89, 158, 231, 0.5);
   background: #599ee7;
   color: #e8e8e8;
 }
@@ -170,11 +192,13 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
   font-weight: 600;
   color: #c9c9c9;
   text-decoration: none;
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   align-self: center;
 }
 
 .back-btn:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 15px rgba(89, 158, 231, 0.5);
   color: #599ee7;
   border: 1.5px solid #599ee7;
 }
@@ -189,12 +213,17 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
   font-size: 0.85rem;
   color: #c9c9c9;
   text-decoration: none;
-  transition: all 0.3s;
+  transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
   align-self: center;
   font-style: italic;
 }
 
-.learn-more-link:hover { color: #599ee7; border: 1.5px solid #599ee7; }
+.learn-more-link:hover {
+  transform: translateY(-3px) scale(1.03);
+  box-shadow: 0 6px 15px rgba(89, 158, 231, 0.5);
+  color: #599ee7;
+  border: 1.5px solid #599ee7;
+}
 
 /* Support text */
 .support-text {
@@ -220,16 +249,11 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
   gap: 10px;
 }
 
-.choose {
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
 .payment-card .details {
   flex: 1;
   text-align: left;
   font-size: 0.85rem;
-  line-height: 1.4;
+  line-height: 1.5;
   display: block;
 }
 
@@ -241,40 +265,74 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
 .payment-card .actions {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7.5px;
   align-items: flex-end;
 }
 
-.copy-btn, .ussd-btn {
-  padding: 8px 12px;
+/* USSD Overlay and Dropdown */
+.ussd-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+  opacity: 0;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.ussd-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Glass morphing dropdown */
+.ussd-dropdown-centered {
+  background: rgba(37, 37, 37, 0.716);
+  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(15px);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  width: 75%;
+  text-align: center;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.1);
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* Show dropdown with ease-in */
+.ussd-overlay.show, .ussd-dropdown-centered.show {
+  opacity: 1;
+}
+
+/* Dropdown options */
+.ussd-dropdown-centered .ussd-option {
+  padding: 12px 20px;
   border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
   background: #c9c9c9;
   color: #181818;
   font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-.copy-btn:hover, .ussd-btn:hover { background: #599ee7; color: #e8e8e8; }
-
-/* Button hover effects */
-.partner-btn, .copy-btn, .ussd-btn, .back-btn, .learn-more-link {
   transition: all 0.5s cubic-bezier(0.77, 0, 0.175, 1);
 }
 
-.partner-btn:hover, 
-.copy-btn:hover, 
-.ussd-btn:hover {
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 6px 15px rgba(89, 158, 231, 0.5);
-}
-.back-btn:hover, 
-.learn-more-link:hover {
+.ussd-dropdown-centered .ussd-option:hover {
+  background: #f3f2f2;
   transform: translateY(-3px) scale(1.03);
   box-shadow: 0 6px 15px rgba(89, 158, 231, 0.5);
 }
 
+/* Hide original dropdown styles if any */
+.ussd-dropdown:not(.centered) { display: none; }
 
 /* Toast */
 #toast {
