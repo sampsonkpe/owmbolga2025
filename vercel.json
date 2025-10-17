@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/owmbolga2025", "destination": "/" }
+  ]
+}
