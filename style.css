@@ -96,7 +96,8 @@ body, html { height: 100%; font-family: 'Poppins', sans-serif; overflow: hidden;
   .back-btn,
   .learn-more-link,
   .copy-btn,
-  .ussd-btn { padding: 8px 16px; font-size: 0.65rem; }
+  .ussd-btn,
+  .ussd-option { padding: 8px 16px; font-size: 0.7rem; }
 }
 
 .highlight { color: #599ee7; font-weight: 700; }
